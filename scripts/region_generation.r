@@ -120,6 +120,7 @@ plt <- ggplot(datapoly, aes(x = x, y = y)) +
 plt
 
 ## Save plot
+## This 'save' assumes that you're working directory is project dirctory
 ggsave("region_map.pdf", plot = plt, path = "output/")
 
 ## Save necessary region information to a table
