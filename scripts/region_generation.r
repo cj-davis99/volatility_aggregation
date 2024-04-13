@@ -97,7 +97,7 @@ plt <- ggplot(datapoly, aes(x = x, y = y)) +
     label.padding = unit(0.55, "lines"), # Rectangle size around label
     label.size = 0.35,
     color = "black",
-    fill = "#ffffff"
+    fill = "white"
   ) +
   geom_vline(
     xintercept = region_intersect[1],
@@ -110,10 +110,22 @@ plt <- ggplot(datapoly, aes(x = x, y = y)) +
     linewidth = 1
   )
 
-## Plot theme (very basic plot):
+## Plot theme (very basic theme):
 plt + theme_bw() +
-    theme(
-        panel.border = element_blank(), 
-        panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank()
-    )
+  theme(
+    panel.border = element_blank(), 
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank()
+  )
+
+## Save necessary region information to a table
+state_data <- data.frame(
+  A = c(shares[1], x_A, y_A),
+  B = c(shares[2], x_B, y_B),
+  C = c(shares[3], x_C, y_C),
+  D = c(shares[4], x_D, y_D),
+  row.names = c("Share", "x_tl", "x_tr", "x_br", "x_bl",
+                "y_tl", "y_tr", "y_br", "y_bl")
+)
+## This 'write' assumes that you're working directory is project dirctory
+write.csv(state_data, "data/state_data.csv")
