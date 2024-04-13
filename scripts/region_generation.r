@@ -1,7 +1,4 @@
-library(ggplot2)
-
-## Setting a random seed
-set.seed(2024)
+source("scripts/packages_and_seeds.r")
 
 ## Generating region share
 shares <- runif(4)
