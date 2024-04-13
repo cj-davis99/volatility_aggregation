@@ -108,15 +108,19 @@ plt <- ggplot(datapoly, aes(x = x, y = y)) +
     yintercept = region_intersect[2],
     colour = "white",
     linewidth = 1
-  )
-
-## Plot theme (very basic theme):
-plt + theme_bw() +
+  ) +
+  theme_bw() +
   theme(
     panel.border = element_blank(), 
     panel.grid.major = element_blank(), 
     panel.grid.minor = element_blank()
   )
+
+## Plot theme (very basic theme):
+plt
+
+## Save plot
+ggsave("region_map.pdf", plot = plt, path = "output/")
 
 ## Save necessary region information to a table
 state_data <- data.frame(
