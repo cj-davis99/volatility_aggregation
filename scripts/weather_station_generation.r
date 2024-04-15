@@ -8,6 +8,7 @@ state_data <- read.csv("data/state_data.csv") |>
   column_to_rownames(var = "X")
 
 region_radius <- state_data["y_tl", "A"]
+region_intersect <- c(state_data["x_br", "A"], state_data["y_br", "A"])
 
 ## Generate random (x,y) coordinates for weather stations (ws)
 x_ws <- runif(num_weather_stations, max = region_radius)
@@ -61,7 +62,6 @@ x_left_label <- (state_data["x_tl", "A"] + state_data["x_tr", "A"]) / 2
 x_right_label <- (state_data["x_tl", "B"] + state_data["x_tr", "B"]) / 2
 y_top_label <- (state_data["y_tl", "A"] + state_data["y_bl", "A"]) / 2
 y_bottom_label <- (state_data["y_tl", "C"] + state_data["y_bl", "C"]) / 2
-region_intersect <- c(state_data["x_br", "A"], state_data["y_br", "A"])
 
 plt <- ggplot(positions, aes(x = x, y = y)) +
   xlab("x (mi)") +
@@ -149,19 +149,19 @@ ws_data_A <- tibble(
   x = x_ws_A,
   y = y_ws_A,
 )
-write.csv(ws_data_A, "data/ws_data_A.csv")
+write.csv(ws_data_A, "data/ws_data_A.csv", row.names = FALSE)
 ws_data_B <- tibble(
   x = x_ws_B,
   y = y_ws_B,
 )
-write.csv(ws_data_B, "data/ws_data_B.csv")
+write.csv(ws_data_B, "data/ws_data_B.csv", row.names = FALSE)
 ws_data_C <- tibble(
   x = x_ws_C,
   y = y_ws_C,
 )
-write.csv(ws_data_C, "data/ws_data_C.csv")
+write.csv(ws_data_C, "data/ws_data_C.csv", row.names = FALSE)
 ws_data_D <- tibble(
   x = x_ws_D,
   y = y_ws_D,
 )
-write.csv(ws_data_D, "data/ws_data_D.csv")
+write.csv(ws_data_D, "data/ws_data_D.csv", row.names = FALSE)
