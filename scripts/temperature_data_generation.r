@@ -38,3 +38,11 @@ ws_b <- read.csv("data/ws_data_B.csv")
 ws_c <- read.csv("data/ws_data_C.csv")
 ws_d <- read.csv("data/ws_data_D.csv")
 
+ws_coordinates <- rbind(ws_a, ws_b, ws_c, ws_d)
+
+num_weather_stations <- length(ws_coordinates["x"])
+
+## Initialize a distance matrix
+dist_matrix <- matrix(0, num_weather_stations, num_weather_stations)
+
+## Compute the distance between every weather station:
