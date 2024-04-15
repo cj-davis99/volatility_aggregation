@@ -59,7 +59,7 @@ plt <- ggplot(datapoly, aes(x = x, y = y)) +
   geom_polygon(aes(fill = value, group = id)) +
   xlab("x (mi)") +
   ylab("y (mi)") +
-  labs(fill= "Share of Production")  +
+  labs(fill = "Share of Production")  +
   geom_label(
     label = "A",
     x = x_left_label,
