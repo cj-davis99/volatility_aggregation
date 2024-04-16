@@ -149,19 +149,19 @@ ws_data_A <- tibble(
   x = x_ws_A,
   y = y_ws_A,
 )
-write.csv(ws_data_A, "data/ws_data_A.csv", row.names = FALSE)
+write.csv(ws_data_A, "data/ws_loc_A.csv", row.names = FALSE)
 ws_data_B <- tibble(
   x = x_ws_B,
   y = y_ws_B,
 )
-write.csv(ws_data_B, "data/ws_data_B.csv", row.names = FALSE)
+write.csv(ws_data_B, "data/ws_loc_B.csv", row.names = FALSE)
 ws_data_C <- tibble(
   x = x_ws_C,
   y = y_ws_C,
 )
-write.csv(ws_data_C, "data/ws_data_C.csv", row.names = FALSE)
+write.csv(ws_data_C, "data/ws_loc_C.csv", row.names = FALSE)
 ws_data_D <- tibble(
   x = x_ws_D,
   y = y_ws_D,
 )
-write.csv(ws_data_D, "data/ws_data_D.csv", row.names = FALSE)
+write.csv(ws_data_D, "data/ws_loc_D.csv", row.names = FALSE)
