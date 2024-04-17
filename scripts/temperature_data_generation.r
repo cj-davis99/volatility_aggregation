@@ -139,6 +139,7 @@ for (i in 1:num_weather_stations) {
   }
 
   ## Ensure that we don't override centroid temperature data
+  ## Note that base sd CAN BE MODIFIED (2.5 and 2 below)
   if (!(i %in% centroids)) {
     temp_matrix[i, ] <- temperature_data(
       mean = temp_matrix[closest_centroid, ],
