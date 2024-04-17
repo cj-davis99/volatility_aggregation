@@ -1,5 +1,5 @@
 # Coding - Final Project
-This repository contains all of the code used to perform the data generation required to create a statistical sandbox for testing temperature volatility aggregation. All coding was done in R
+This repository contains all of the code used to perform the data generation required to create a statistical sandbox for testing temperature volatility aggregation. All coding was done in R.
 
 ## Project layout
 - All scripts can be found in the 'scripts' directory.
