@@ -1,6 +1,17 @@
 source("scripts/packages_and_seeds.r")
 
-## Generating region share
+## =================================================================
+## In this script:
+## We will construct a square region and split the region into FOUR
+## states (scripts do not generalize to a different sized split).
+## PREREQUISITE: NA
+## =================================================================
+
+## =================================================================
+## Data generation
+## =================================================================
+## Generating region shares
+## This is useful for custom aggregation schemes
 shares <- runif(4)
 shares <- shares / sum(shares)
 
@@ -10,9 +21,11 @@ shares <- shares / sum(shares)
 ## Illinois is approximatley 57,915 square miles
 ## Nebraska is approximately 77,348 square miles
 ## Minnesota is approximately 86,943 square miles
+## Size of region CAN BE MODIFIED
 total_sq_miles <- 56273 + 57915 + 77348 + 86943
 region_radius <- sqrt(total_sq_miles)
 region_intersect <- runif(2, min = 0, max = region_radius)
+
 
 ## Region A will be the top left of rectangle in the region
 x_A <- c(0, region_intersect[1], region_intersect[1], 0)
@@ -30,7 +43,9 @@ y_C <- c(region_intersect[2], region_intersect[2], 0, 0)
 x_D <- c(region_intersect[1], region_radius, region_radius, region_intersect[1])
 y_D <- c(region_intersect[2], region_intersect[2], 0, 0)
 
+## =================================================================
 ## Plotting the region
+## =================================================================
 ids <- factor(c("A", "B", "C", "D"))
 x <- c(x_A, x_B, x_C, x_D)
 y <- c(y_A, y_B, y_C, y_D)
@@ -113,9 +128,11 @@ plt <- ggplot(datapoly, aes(x = x, y = y)) +
     panel.grid.minor = element_blank()
   )
 
-## Plot theme (very basic theme):
 plt
 
+## =================================================================
+## Saving
+## =================================================================
 ## Save plot
 ## This 'save' assumes that you're working directory is project dirctory
 ggsave("region_map.pdf", plot = plt, path = "output/")

@@ -1,6 +1,18 @@
 source("scripts/packages_and_seeds.r")
 
+## =================================================================
+## In this script:
+## We will generate random locations for weather stations throughout
+## our region and save the location data into the data folder. 
+## PREREQUISITE: must have run:
+##                region_generation.r
+## =================================================================
+
+## =================================================================
+## Data generation
+## =================================================================
 ## We want to randomly generate 200 weather station locations
+## The number of weather stations CAN BE MODIFIED
 num_weather_stations <- 200
 
 ## Load in the state data
@@ -14,7 +26,7 @@ region_intersect <- c(state_data["x_br", "A"], state_data["y_br", "A"])
 x_ws <- runif(num_weather_stations, max = region_radius)
 y_ws <- runif(num_weather_stations, max = region_radius)
 
-## Sort weather station coordinates
+## Sort weather station coordinates by state
 x_ws_A <- c()
 x_ws_B <- c()
 x_ws_C <- c()
@@ -50,7 +62,11 @@ for (i in 1:num_weather_stations){
   }
 }
 
-## Plot weather stations in regions
+## =================================================================
+## Plotting
+## =================================================================
+## Plot weather stations on region map
+## We will use this to plot state outlines
 positions <- data.frame(
   x = c(state_data[2:5, "A"], state_data["x_tl", "A"], state_data[2:5, "B"],
         state_data[2:5, "C"], state_data["x_tl", "C"], state_data[2:5, "D"]),
@@ -66,7 +82,7 @@ y_bottom_label <- (state_data["y_tl", "C"] + state_data["y_bl", "C"]) / 2
 plt <- ggplot(positions, aes(x = x, y = y)) +
   xlab("x (mi)") +
   ylab("y (mi)") +
-  geom_path() +
+  geom_path() + ## Plots state outlines
   geom_point( ## Plotting weather stations in A
     color = "red",
     data = data.frame(
@@ -140,11 +156,15 @@ plt <- ggplot(positions, aes(x = x, y = y)) +
 
 plt
 
+## =================================================================
+## Saving
+## =================================================================
 ## Save plot
-## This 'save' assumes that you're working directory is project dirctory
+## This 'save' assumes that you're working directory is the project dirctory
 ggsave("weather_station_map.pdf", plot = plt, path = "output/")
 
 ## Save the weather station location data
+## This 'save' assumes that you're working directory is the project dirctory
 ws_data_A <- tibble(
   x = x_ws_A,
   y = y_ws_A,

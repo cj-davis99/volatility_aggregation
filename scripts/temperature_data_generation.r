@@ -1,6 +1,22 @@
 source("scripts/packages_and_seeds.r")
 
-## We want to generate our temperature for each weather station
+## =================================================================
+## In this script:
+## We will generate ONE YEAR of temperature for each weather station
+## in our region and save the temperature data (paired with the
+## weather station location data) to the data folder.
+## PREREQUISITE: must have run:
+##                region_generation.r
+##                weather_station_generation.r
+## =================================================================
+
+## =================================================================
+## Example Plots
+## =================================================================
+## The following plots help visualize the data generation process
+## !!!
+## None of this is necessary for data generation
+## !!!
 ## Temperature will be a noisy form of the following function
 base_plt <- ggplot() +
   xlim(0, 365) +
@@ -10,7 +26,7 @@ base_plt <- ggplot() +
   xlab("Day") +
   ylab("Temperature (Fahrenheit)")
 
-## Generating noisy data:
+## Generating noisy data (example):
 temp_data <- temperature_data(winter_sd = 7.5, summer_sd = 5)
 
 noise_plt <- ggplot(
@@ -32,11 +48,23 @@ noise_plt <- ggplot(
   xlab("Day") +
   ylab("Temperature (Fahrenheit)")
 
+## Save plots
+## This 'save' assumes that you're working directory is project dirctory
+ggsave("no_noise_temperature.pdf", plot = base_plt, path = "output/")
+ggsave("noisy_temp_ex.pdf", plot = base_plt, path = "output/")
+
+## =================================================================
+## Data generation
+## =================================================================
 ## Import weather station location data
 ws_a <- read.csv("data/ws_loc_A.csv")
+num_ws_a <- length(ws_a$x)
 ws_b <- read.csv("data/ws_loc_B.csv")
+num_ws_b <- length(ws_b$x)
 ws_c <- read.csv("data/ws_loc_C.csv")
+num_ws_c <- length(ws_c$x)
 ws_d <- read.csv("data/ws_loc_D.csv")
+num_ws_d <- length(ws_d$x)
 
 ws_coordinates <- rbind(ws_a, ws_b, ws_c, ws_d)
 
@@ -46,7 +74,10 @@ num_weather_stations <- length(ws_coordinates[, "x"])
 dist <- c()
 
 ## Compute the distance between every weather station
-## (this may take a couple minutes):
+## We need this for creating correlation between weather stations
+## !!!
+## (THIS MAY TAKE A COUPLE OF MINUTES):
+## !!!
 for (i in seq_along(ws_coordinates$x)) {
   for (j in seq_along(ws_coordinates$x)) {
     dist <- c(dist, as.numeric(d(ws_coordinates[i, c("x", "y")],
@@ -67,18 +98,20 @@ temp_matrix <- matrix(
   ncol = 365
 )
 
-## We will cluster weather stations and give them correlated temperatures
-## Choose a random weather station to be the center of the cluster from each
-## region:
-centroid_a <- sample(1:length(ws_a$x), 1)
-centroid_b <- sample(1:length(ws_b$x), 1) + length(ws_a$x)
-centroid_c <- sample(1:length(ws_c$x), 1) + length(ws_a$x) +
-  length(ws_b$x)
-centroid_d <- sample(1:length(ws_d$x), 1) + length(ws_a$x) +
-  length(ws_b$x) + length(ws_c$x)
+## We will cluster weather stations and give weather stations in the same
+## cluster correlated temperatures.
+## Centroid of clusters will be chosen at random. Remark that each centroid
+## generated below will correspond to an index in ws_coordinates
+centroid_a <- sample(1:num_ws_a, 1)
+centroid_b <- sample(1:num_ws_b, 1) + num_ws_a
+centroid_c <- sample(1:num_ws_c, 1) + num_ws_a +
+  num_ws_b
+centroid_d <- sample(1:num_ws_d, 1) + num_ws_a +
+  num_ws_b + num_ws_c
 
 centroids <- c(centroid_a, centroid_b, centroid_c, centroid_d)
 
+## The standard deviations CAN BE MODIFIED
 ## Temperature in centroid_a
 temp_matrix[centroid_a, ] <- temperature_data(winter_sd = 10, summer_sd = 3)
 
@@ -105,6 +138,7 @@ for (i in 1:num_weather_stations) {
     closest_centroid <- centroid_d
   }
 
+  ## Ensure that we don't override centroid temperature data
   if (!(i %in% centroids)) {
     temp_matrix[i, ] <- temperature_data(
       mean = temp_matrix[closest_centroid, ],
@@ -114,21 +148,23 @@ for (i in 1:num_weather_stations) {
   }
 }
 
-## Now we just need to save the temperature data
-final_table_a <- cbind(ws_a, temp_matrix[1:length(ws_a$x), ])
+## =================================================================
+## Saving
+## =================================================================
+final_table_a <- cbind(ws_a, temp_matrix[1:num_ws_a, ])
 final_table_b <- cbind(
   ws_b,
-  temp_matrix[(1 + length(ws_a$x)):(length(ws_a$x) + length(ws_b$x)), ]
+  temp_matrix[(1 + num_ws_a):(num_ws_a + num_ws_b), ]
 )
 final_table_c <- cbind(
   ws_c,
-  temp_matrix[(1 + length(ws_a$x) + length(ws_b$x)):
-                (length(ws_a$x) + length(ws_b$x) + length(ws_c$x)), ]
+  temp_matrix[(1 + num_ws_a + num_ws_b):
+                (num_ws_a + num_ws_b + num_ws_c), ]
 )
 final_table_d <- cbind(
   ws_d,
   temp_matrix[seq(
-    from = 1 + length(ws_a$x) + length(ws_b$x) + length(ws_c$x),
+    from = 1 + num_ws_a + num_ws_b + num_ws_c,
     to = num_weather_stations
   ),
   ]
