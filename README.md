@@ -5,6 +5,7 @@ This repository contains all of the code used to perform the data generation req
 - All scripts can be found in the 'scripts' directory.
 - All data generated should be exported to the 'data' directory. 
 - All output figures should be exported to the 'output' directory. 
+- Unit tests can be found in the 'tests' directory. 
 
 ### Scripts
 The "run_all.r" script runs each script in the inteded order. The intended order of running scripts is as follows:
@@ -15,6 +16,9 @@ The "run_all.r" script runs each script in the inteded order. The intended order
 
 #### Packages
 The script titled "packages_and_seeds.r" must be sourced before going through any individual script as it contains all of the required packages (ggplot2 and tidyverse), custom fucntions (a Euclidian distance metric function and a random temperature generation function), and the random seed used throughout the project. 
+
+#### Tests
+I ran very simple tests on my custom functions to make sure they returned expected output. 
 
 #### Region Generation
 The "region_generation.r" script generates a rectangular region whose size is based on the contiguous region formed by Iowa, Illinois, Nebraska, and Minnesota (this size can be modified). The region is then (randomly) divided into four rectangular states (which we call A, B, C, and D) and plotted. Each state is also assigned a randomly generated share $s_i$ where $i\in \{ \text{A, B, C, D} \}$ and $\sum_i s_i = 1$. These shares are intended to be used in an intermediate aggregation step to test the effect of custom weighting schemes in aggregation from a state-level to a regional-level. The script outputs the figure titled "region_map.pdf" and the data file titled "state_data.csv". 
