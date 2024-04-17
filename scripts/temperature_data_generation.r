@@ -51,7 +51,7 @@ noise_plt <- ggplot(
 ## Save plots
 ## This 'save' assumes that you're working directory is project dirctory
 ggsave("no_noise_temperature.pdf", plot = base_plt, path = "output/")
-ggsave("noisy_temp_ex.pdf", plot = base_plt, path = "output/")
+ggsave("noisy_temp_ex.pdf", plot = noise_plt, path = "output/")
 
 ## =================================================================
 ## Data generation
